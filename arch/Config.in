@@ -77,6 +77,12 @@ config BR2_i386
 	  Intel i386 architecture compatible microprocessor
 	  http://en.wikipedia.org/wiki/I386
 
+config BR2_loongisa
+        bool "LoongISA"
+	select BR2_USE_MMU
+        help
+          LoongISA powered by Loongson Technology
+
 config BR2_m68k
 	bool "m68k"
 	# MMU support is set by the subarchitecture file, arch/Config.in.m68k
@@ -408,6 +414,10 @@ endif
 
 if BR2_i386 || BR2_x86_64
 source "arch/Config.in.x86"
+endif
+
+if BR2_loongisa
+source "arch/Config.in.loongisa"
 endif
 
 if BR2_xtensa

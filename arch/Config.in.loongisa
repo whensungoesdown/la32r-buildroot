@@ -1,0 +1,103 @@
+# RISC-V CPU ISA extensions.
+
+config BR2_LISA_ISA_ALL_BASE
+	bool
+
+config BR2_LISA_ISA_AMO
+	bool
+
+config BR2_LISA_ISA_LSX
+	bool
+
+config BR2_LISA_ISA_LASX
+	bool
+
+choice
+	prompt "Target Architecture Variant"
+	default BR2_loongisa_g
+
+config BR2_loongisa_g
+	bool "General purpose (G)"
+	select BR2_LISA_ISA_ALL_BASE
+	select BR2_LISA_ISA_LSX
+	select BR2_LISA_ISA_LASX
+	help
+	  General purpose (G) is equivalent to ALL_BASE and vector ISA.
+
+config BR2_loongisa_custom
+	bool "Custom architecture"
+	select BR2_LISA_ISA_CUSTOM_ALL_BASE
+	select BR2_LISA_ISA_CUSTOM_AMO
+
+endchoice
+
+if BR2_loongisa_custom
+
+comment "Instruction Set Base"
+
+config BR2_LISA_ISA_CUSTOM_ALL_BASE
+	bool "All base ISA"
+	select BR2_LISA_ISA_ALL_BASE
+
+comment "Instruction Set Extensions"
+
+config BR2_LISA_ISA_CUSTOM_AMO
+	bool "Loongson AMO"
+	select BR2_LISA_ISA_AMO
+
+config BR2_LISA_ISA_CUSTOM_LSX
+	bool "Loongson SX"
+	select BR2_LISA_ISA_LSX
+
+config BR2_LISA_ISA_CUSTOM_LASX
+	bool "Loongson ASX"
+	select BR2_LISA_ISA_LASX
+endif
+
+choice
+	prompt "Target Architecture Size"
+	default BR2_LISA_64
+
+config BR2_LISA_32
+	bool "32-bit"
+
+config BR2_LISA_64
+	bool "64-bit"
+	select BR2_ARCH_IS_64
+
+endchoice
+
+choice
+	prompt "Target ABI"
+	default BR2_LISA_ABI_LP32   if !BR2_ARCH_IS_64
+	default BR2_LISA_ABI_LP64   if BR2_ARCH_IS_64
+
+config BR2_LISA_ABI_LP32
+	bool "ilp32d"
+	depends on !BR2_ARCH_IS_64
+
+config BR2_LISA_ABI_LP64
+	bool "lp64"
+	depends on BR2_ARCH_IS_64
+endchoice
+
+config BR2_ARCH
+	default "loongarch32" if !BR2_ARCH_IS_64
+	default "loongarch64" if BR2_ARCH_IS_64
+
+config BR2_NORMALIZED_ARCH
+	default "loongarch" if !BR2_ARCH_IS_64
+	default "loongarch64" if BR2_ARCH_IS_64
+
+config BR2_ENDIAN
+	default "LITTLE"
+
+config BR2_GCC_TARGET_ABI
+	default "ilp32d" if BR2_LISA_ABI_LP32
+	default "lp64" if BR2_LISA_ABI_LP64
+
+config BR2_READELF_ARCH_NAME
+	default "LoongArch"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-
