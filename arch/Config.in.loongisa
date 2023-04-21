@@ -73,7 +73,7 @@ choice
 	default BR2_LISA_ABI_LP64   if BR2_ARCH_IS_64
 
 config BR2_LISA_ABI_LP32
-	bool "ilp32d"
+	bool "ilp32s"
 	depends on !BR2_ARCH_IS_64
 
 config BR2_LISA_ABI_LP64
@@ -93,7 +93,7 @@ config BR2_ENDIAN
 	default "LITTLE"
 
 config BR2_GCC_TARGET_ABI
-	default "ilp32d" if BR2_LISA_ABI_LP32
+	default "ilp32s" if BR2_LISA_ABI_LP32
 	default "lp64" if BR2_LISA_ABI_LP64
 
 config BR2_READELF_ARCH_NAME
