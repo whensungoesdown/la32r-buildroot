@@ -49,8 +49,8 @@ index b86f5f35d0..479a90bccb 100644
  #  endif
 +#elif defined(__loongarch32)
 +#  define native_architecture() ARCHITECTURE_LOONGARCH32
-+#  if defined(__loongarch_double_float)
-+#    define LIB_ARCH_TUPLE "loongarch64-linux-gnuf64"
++#  if defined(__loongarch_soft_float)
++#    define LIB_ARCH_TUPLE "loongarch64-linux-gnusf"
 +#  else
 +#    error "Unrecognized loongarch architecture variant"
 +#  endif
