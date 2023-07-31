@@ -104,6 +104,8 @@ copy_toolchain_lib_root = \
 #     libstdc++ and other gcc support libraries outside of the
 #     sysroot)
 copy_toolchain_sysroot = \
+	$(info "SJY") \
+	$(info SYSROOT_DIR: $1) \
 	SYSROOT_DIR="$(strip $1)"; \
 	ARCH_SYSROOT_DIR="$(strip $2)"; \
 	ARCH_SUBDIR="$(strip $3)"; \
@@ -134,10 +136,14 @@ copy_toolchain_sysroot = \
 	relpath="$(call relpath_prefix,$${ARCH_LIB_DIR})" ; \
 	if [ "$${relpath}" != "" ]; then \
 		for i in $$(find -H $(STAGING_DIR)/$${ARCH_LIB_DIR} $(STAGING_DIR)/usr/$${ARCH_LIB_DIR} -type l -xtype l); do \
+			echo "Processing symlink: $$i" ; \
 			LINKTARGET=`readlink $$i` ; \
 			NEWLINKTARGET=$${LINKTARGET\#$$relpath} ; \
+			echo "  - Old target: $$LINKTARGET" ; \
+			echo "  - New target: $$NEWLINKTARGET" ; \
 			ln -sf $${NEWLINKTARGET} $$i ; \
-			$(call simplify_symlink,$$i,$(STAGING_DIR)) ; \
+			echo "  - Created new symlink: $$i" ; \
+			echo "  - New symlink target: $$(readlink $$i)" ; \
 		done ; \
 	fi ; \
 	if [[ ! $$(find $(STAGING_DIR)/lib -name 'ld*.so.*' -print -quit) ]]; then \
@@ -542,6 +548,7 @@ define simplify_symlink
 	REL_SRC="$${FULL_SRC#$${FULL_BASE}/}" ; \
 	REL_DEST="$${FULL_DEST#$${FULL_BASE}/}" ; \
 	DOTS="$(call relpath_prefix,$${REL_SRC})" ; \
+	echo "simplify_symlink: $${DOTS}$${REL_DEST} $${FULL_SRC}" ; \
 	ln -sf "$${DOTS}$${REL_DEST}" "$${FULL_SRC}" ; \
 )
 endef

@@ -340,13 +340,15 @@ endef
 #
 # And variations on these.
 define toolchain_find_sysroot
-$$(printf $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:/(usr/)?lib(32|64)?([^/]*)?/([^/]*/)?libc\.a:/:')
+$$(printf $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:/(usr/)?lib(32|64|32/sf|64/sf)?([^/]*)?/([^/]*/)?libc\.a:/:')
 endef
+
+$(warning "SJY")
 
 # Returns the lib subdirectory for the given compiler + flags (i.e
 # typically lib32 or lib64 for some toolchains)
 define toolchain_find_libdir
-$$(printf $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:.*/(usr/)?(lib(32|64)?([^/]*)?(/[^/]*)?)/libc.a:\2:')
+$$(printf $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:.*/(usr/)?(lib(32|64|32/sf|64/sf)?([^/]*)?(/[^/]*)?)/libc.a:\2:')
 endef
 
 # Returns the location of the libc.a file for the given compiler + flags
@@ -461,8 +463,11 @@ endef
 create_lib_symlinks = \
 	$(Q)DESTDIR="$(strip $1)" ; \
 	ARCH_LIB_DIR="$(call toolchain_find_libdir,$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS))" ; \
+	echo "SJY_ARCH_LIB_DIR: $$ARCH_LIB_DIR" ; \
 	if [ ! -e "$${DESTDIR}/$${ARCH_LIB_DIR}" -a ! -e "$${DESTDIR}/usr/$${ARCH_LIB_DIR}" ]; then \
 		relpath="$(call relpath_prefix,$${ARCH_LIB_DIR})" ; \
+		echo "SJY_relpath: $${relpath}" ; \
+		echo "create_lib_symlinks: $${relpath}lib $${DESTDIR}/$${ARCH_LIB_DIR} $${DESTDIR}/usr/$${ARCH_LIB_DIR}" ; \
 		ln -snf $${relpath}lib "$${DESTDIR}/$${ARCH_LIB_DIR}" ; \
 		ln -snf $${relpath}lib "$${DESTDIR}/usr/$${ARCH_LIB_DIR}" ; \
 	fi
