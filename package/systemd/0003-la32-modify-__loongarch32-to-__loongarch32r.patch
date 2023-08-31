@@ -1,0 +1,40 @@
+From 2d62ae7634d1ebd1d683717be359f04f4159f990 Mon Sep 17 00:00:00 2001
+From: shenjinyang <shenjinyang@loongson.cn>
+Date: Sat, 7 Oct 2023 16:20:15 +0800
+Subject: [PATCH 3/3] la32: modify __loongarch32 to __loongarch32r
+
+Signed-off-by: shenjinyang <shenjinyang@loongson.cn>
+---
+ src/basic/architecture.c | 2 +-
+ src/basic/architecture.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/basic/architecture.c b/src/basic/architecture.c
+index 379a4791b7..cb747cff94 100644
+--- a/src/basic/architecture.c
++++ b/src/basic/architecture.c
+@@ -73,7 +73,7 @@ Architecture uname_architecture(void) {
+ #elif defined(__loongarch64)
+                 { "loongarch64", ARCHITECTURE_LOONGARCH64 },
+ 
+-#elif defined(__loongarch32)
++#elif defined(__loongarch32r)
+                 { "loongarch32r", ARCHITECTURE_LOONGARCH32 },
+ 
+ #elif defined(__m68k__)
+diff --git a/src/basic/architecture.h b/src/basic/architecture.h
+index 6d44eee5ed..cd4221c82b 100644
+--- a/src/basic/architecture.h
++++ b/src/basic/architecture.h
+@@ -210,7 +210,7 @@ Architecture uname_architecture(void);
+ #  else
+ #    error "Unrecognized loongarch architecture variant"
+ #  endif
+-#elif defined(__loongarch32)
++#elif defined(__loongarch32r)
+ #  define native_architecture() ARCHITECTURE_LOONGARCH32
+ #  if defined(__loongarch_soft_float)
+ #    define LIB_ARCH_TUPLE "loongarch64-linux-gnusf"
+-- 
+2.31.1
+

@@ -1,0 +1,45 @@
+From 7a740af4b32042a8e9ff99eade1da879ae9e93db Mon Sep 17 00:00:00 2001
+From: Jinyang Shen <shenjinyang@loongson.cn>
+Date: Sun, 23 Apr 2023 11:37:57 +0800
+Subject: [PATCH 2/2] la32: debug systemd
+
+Signed-off-by: Jinyang Shen <shenjinyang@loongson.cn>
+---
+ src/basic/architecture.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/basic/architecture.c b/src/basic/architecture.c
+index d731cbb8e1..379a4791b7 100644
+--- a/src/basic/architecture.c
++++ b/src/basic/architecture.c
+@@ -74,7 +74,7 @@ Architecture uname_architecture(void) {
+                 { "loongarch64", ARCHITECTURE_LOONGARCH64 },
+ 
+ #elif defined(__loongarch32)
+-                { "loongarch32", ARCHITECTURE_LOONGARCH32 },
++                { "loongarch32r", ARCHITECTURE_LOONGARCH32 },
+ 
+ #elif defined(__m68k__)
+                 { "m68k",       ARCHITECTURE_M68K     },
+@@ -133,6 +133,9 @@ Architecture uname_architecture(void) {
+ 
+         assert_se(uname(&u) >= 0);
+ 
++        //fprintf(stderr, "SJY machine name = %s\n", u.machine);
++        //fprintf(stderr, "SJY test for buildroot\n");
++
+         for (size_t i = 0; i < ELEMENTSOF(arch_map); i++)
+                 if (streq(arch_map[i].machine, u.machine))
+                         return cached = arch_map[i].arch;
+@@ -155,7 +158,7 @@ static const char *const architecture_table[_ARCHITECTURE_MAX] = {
+         [ARCHITECTURE_X86]         = "x86",
+         [ARCHITECTURE_IA64]        = "ia64",
+         [ARCHITECTURE_LOONGARCH64] = "loongarch64",
+-        [ARCHITECTURE_LOONGARCH32] = "loongarch32",
++        [ARCHITECTURE_LOONGARCH32] = "loongarch32r",
+         [ARCHITECTURE_M68K]        = "m68k",
+         [ARCHITECTURE_MIPS64_LE]   = "mips64-le",
+         [ARCHITECTURE_MIPS64]      = "mips64",
+-- 
+2.31.1
+
