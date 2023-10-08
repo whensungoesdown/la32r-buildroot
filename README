@@ -24,3 +24,29 @@ You can also find us on #buildroot on OFTC IRC.
 
 If you would like to contribute patches, please read
 https://buildroot.org/manual.html#submitting-patches
+
+/*********************************************************************/
+/*                           LOONGARCH                               */
+/*********************************************************************/
+
+编译la32r buildroot:
+1. 使用默认配置：
+	make loongarch_defconfig
+
+2. 指定编译工具链的路径:
+	make menuconfig
+		|---Toolchain
+			|---Toolchain path
+
+3. 通过buildroot编译内核时，需要通过配置选项指定内核的tar包URL地址：
+	make menuconfig
+		|---kernel
+			|---URL of custom kernel tarball
+4. 设置系统启动的root密码:
+	make menuconfig
+		|---System configuration
+			|---Root password
+5. make -j
+
+
+首次编译时，由于需要下载各种选定的安装包，编译时间会比较长。
