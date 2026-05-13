@@ -343,7 +343,6 @@ define toolchain_find_sysroot
 $$(printf $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:/(usr/)?lib(32|64|32/sf|64/sf)?([^/]*)?/([^/]*/)?libc\.a:/:')
 endef
 
-$(warning "SJY")
 
 # Returns the lib subdirectory for the given compiler + flags (i.e
 # typically lib32 or lib64 for some toolchains)
